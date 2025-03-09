@@ -74,19 +74,19 @@ class Mwaloni
      * 
      * Send money to a mobile number
      * 
-     * @param string $destination
-     * @param string $orderNumber
-     * @param string $accountName
-     * @param string $accountNumber
-     * @param float $amount
-     * @param string $currencyCode
-     * @param string $countryCode
-     * @param string $description
-     * @param string $accountReference
+     * @param string $destination {mobile|bank} - The destination of the money
+     * @param string $orderNumber - The order number
+     * @param string $accountName - The name of the account holder
+     * @param string $accountNumber - The mobile number, till number or paybill number
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $countryCode - The country code
+     * @param string $description - The description of the transaction
+     * @param string $accountReference - The account reference
      * 
      * @return mixed
      */
-    public function sendMoney($destination, $orderNumber, $accountName, $accountNumber, $amount, $currencyCode, $countryCode, $description, $accountReference)
+    public function mobile($destination, $orderNumber, $accountName, $accountNumber, $amount, $currencyCode, $countryCode, $description, $accountReference)
     {
         $channel = "daraja";
         if ($destination != "mobile") {
@@ -129,22 +129,22 @@ class Mwaloni
      * 
      * Send money to a bank account
      * 
-     * @param string $orderNumber
-     * @param string $accountNumber
-     * @param string $accountName
-     * @param string $bankCode
-     * @param string $bankCountryCode
-     * @param float $amount
-     * @param string $currencyCode
-     * @param string $description
+     * @param string $orderNumber - The order number
+     * @param string $accountNumber - The account number
+     * @param string $accountName - The name of the account holder
+     * @param string $bankCode - The bank code
+     * @param string $bankCountryCode - The country code of the bank
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $description - The description of the transaction
      * 
      * @return mixed
      */
-    public function sendPesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
-            'channel' => 'pesalink-bank',
+            'channel' => 'pesalink',
             'service_id' => $this->serviceId,
             'username' => $this->username,
             'password' => $this->encrypt($this->password),
