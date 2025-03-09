@@ -127,6 +127,101 @@ class Mwaloni
 
     /**
      * 
+     * Send money to a mobile number
+     * 
+     * @param string $orderNumber - The order number
+     * @param string $accountName - The name of the account holder
+     * @param string $accountNumber - The mobile number, till number or paybill number
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $countryCode - The country code
+     * @param string $description - The description of the transaction
+     * @param string $accountReference - The account reference
+     * 
+     * @return mixed
+     */
+
+    public function ift($orderNumber, $accountNumber, $accountName, $amount, $description)
+    {
+        /// Prepare the request body
+        $body = [
+            'channel' => 'ift',
+            'service_id' => $this->serviceId,
+            'username' => $this->username,
+            'password' => $this->encrypt($this->password),
+            'key' => $this->apiKey,
+            "account_name" => $accountName,
+            "account_number" => $accountNumber,
+            "amount" => $amount,
+            "order_number" => $orderNumber,
+            "description" => $description,
+        ];
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Authenticate -------------------');
+            info('sendPesalink request: ' . json_encode($body));
+            info('sendPesalink result: ' . $result);
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
+     * Send money to a bank account
+     * 
+     * @param string $orderNumber - The order number
+     * @param string $accountNumber - The account number
+     * @param string $accountName - The name of the account holder
+     * @param string $bankCode - The bank code
+     * @param string $bankCountryCode - The country code of the bank
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $description - The description of the transaction
+     * 
+     * @return mixed
+     */
+
+    public function eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    {
+        /// Prepare the request body
+        $body = [
+            'channel' => 'eft',
+            'service_id' => $this->serviceId,
+            'username' => $this->username,
+            'password' => $this->encrypt($this->password),
+            'key' => $this->apiKey,
+            "country_code" => $bankCountryCode,
+            "account_name" => $accountName,
+            "bank_code" => $bankCode,
+            "account_number" => $accountNumber,
+            "amount" => $amount,
+            "currency_code" => $currencyCode,
+            "order_number" => $orderNumber,
+            "description" => $description,
+        ];
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Authenticate -------------------');
+            info('eft request: ' . json_encode($body));
+            info('eft result: ' . $result);
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
      * Send money to a bank account
      * 
      * @param string $orderNumber - The order number
@@ -167,6 +262,54 @@ class Mwaloni
             info('------------------- Authenticate -------------------');
             info('sendPesalink request: ' . json_encode($body));
             info('sendPesalink result: ' . $result);
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
+     * Send money to a bank account
+     * 
+     * @param string $orderNumber - The order number
+     * @param string $accountNumber - The account number
+     * @param string $accountName - The name of the account holder
+     * @param string $bankCode - The bank code
+     * @param string $bankCountryCode - The country code of the bank
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $description - The description of the transaction
+     * 
+     * @return mixed
+     */
+
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    {
+        $body = [
+            'channel' => 'rtgs',
+            'service_id' => $this->serviceId,
+            'username' => $this->username,
+            'password' => $this->encrypt($this->password),
+            'key' => $this->apiKey,
+            "country_code" => $bankCountryCode,
+            "account_name" => $accountName,
+            "bank_code" => $bankCode,
+            "account_number" => $accountNumber,
+            "amount" => $amount,
+            "currency_code" => $currencyCode,
+            "order_number" => $orderNumber,
+            "description" => $description,
+        ];
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Authenticate -------------------');
+            info('rtgs request: ' . json_encode($body));
+            info('rtgs result: ' . $result);
         }
 
         /// Return the result
