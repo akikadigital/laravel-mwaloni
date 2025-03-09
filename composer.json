@@ -1,6 +1,6 @@
 {
     "name": "akika/laravel-mwaloni",
-    "description": "A single-tenant Laravel package for integrating Mpesa, Equity Jenga API,s and NCBA Loop API through Mwaloni Wallet",
+    "description": "A single-tenant Laravel package for integrating Mpesa, Equity Jenga API's and NCBA Loop API through Mwaloni Wallet",
     "homepage": "https://github.com/akikadigital/laravel-mwaloni",
     "type": "library",
     "keywords": [
