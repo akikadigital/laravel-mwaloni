@@ -33,18 +33,22 @@ MWALONI_SANDBOX_USERNAME=
 MWALONI_SANDBOX_PASSWORD=
 ```
 
-NOTE: The mpesa.php config file sets the default `MPESA_ENV` value to `sandbox`. This will always load sandbox urls.
+NOTE:
+
+-   The mwaloni.php config file sets the default `MWALONI_ENV` value to `sandbox`. This will always load sandbox urls.
+-   It also sets the default debug mode to true. When true, the package will log into the log destination provided
+-   Please provide the other details in the evn or the config file as provided by Mwaloni.
 
 ## Function Responses
 
-All responses, except the token generation response, conform to the responses documented on the daraja portal.
+All responses, will be in json format as received from the Mwaloni portal.
 
 ## Usage
 
-### Initializing Mpesa
+### Initializing Mwaloni
 
 ```php
 use Akika\LaravelMwaloni\Mwaloni;
 
-$mwaloni = new Mwaloni();
+$mwaloni = new Mwaloni($baseUrl, $serviceId, $username, $password);
 ```

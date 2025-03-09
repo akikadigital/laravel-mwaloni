@@ -19,6 +19,11 @@ class MwaloniServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
     public function boot()
     {
         if ($this->app->runningInConsole()) {
