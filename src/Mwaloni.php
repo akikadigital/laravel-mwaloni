@@ -50,8 +50,6 @@ class Mwaloni
      */
     public function fetchBalance()
     {
-        info('PASSWORD: ' . $this->password);
-
         /// Prepare the request body
         $body = [
             'service_id' => $this->serviceId,
@@ -78,10 +76,97 @@ class Mwaloni
      * 
      * Send money to a mobile number
      * 
-     * @param string $destination {mobile|bank} - The destination of the money
+     * @param string $orderNumber - The order number
+     * @param string $phoneNumber - The mobile number
+     * @param float $amount - The amount to send
+     * @param string $description - The description of the transaction
+     * 
+     * @return mixed
+     */
+
+    public function mobile($orderNumber, $phoneNumber, $amount, $description)
+    {
+        /// Prepare the request body
+        $body = [
+            'channel' => 'daraja-mobile',
+            'service_id' => $this->serviceId,
+            'username' => $this->username,
+            'password' => $this->encrypt($this->password),
+            'key' => $this->apiKey,
+            'order_number' => $orderNumber,
+            'amount' => $amount,
+            'account_number' => $phoneNumber,
+            'description' => $description,
+            'country_code' => "KE",
+            'currency_code' => "KES",
+        ];
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Authenticate -------------------');
+            info('mobile request: ' . json_encode($body));
+            info('mobile request: ' . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
+     * Send money to a till number
+     * 
      * @param string $orderNumber - The order number
      * @param string $accountName - The name of the account holder
-     * @param string $accountNumber - The mobile number, till number or paybill number
+     * @param string $accountNumber - The till number
+     * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
+     * @param string $countryCode - The country code
+     * @param string $description - The description of the transaction
+     * 
+     * @return mixed
+     */
+
+    public function till($orderNumber, $accountName, $accountNumber, $amount, $description)
+    {
+        /// Prepare the request body
+        $body = [
+            'channel' => 'daraja-till',
+            'service_id' => $this->serviceId,
+            'username' => $this->username,
+            'password' => $this->encrypt($this->password),
+            'key' => $this->apiKey,
+            'order_number' => $orderNumber,
+            'amount' => $amount,
+            'account_name' => $accountName,
+            'account_number' => $accountNumber,
+            'description' => $description,
+        ];
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Authenticate -------------------');
+            info('till request: ' . json_encode($body));
+            info('till result: ' . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
+     * Send money to a paybill account
+     * 
+     * @param string $orderNumber - The order number
+     * @param string $accountName - The name of the account holder
+     * @param string $accountNumber - The paybill number
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
      * @param string $countryCode - The country code
@@ -90,17 +175,12 @@ class Mwaloni
      * 
      * @return mixed
      */
-    public function mobile($destination, $orderNumber, $accountName, $accountNumber, $amount, $currencyCode, $countryCode, $description, $accountReference)
-    {
-        $channel = "daraja";
-        if ($destination != "mobile") {
-            if ($accountReference) $channel .= "-paybill";
-            else $channel .= "-till";
-        }
 
+    public function paybill($accountReference, $orderNumber, $accountName, $accountNumber, $amount, $description)
+    {
         /// Prepare the request body
         $body = [
-            'channel' => $channel,
+            'channel' => 'daraja-paybill',
             'service_id' => $this->serviceId,
             'username' => $this->username,
             'password' => $this->encrypt($this->password),
@@ -111,8 +191,6 @@ class Mwaloni
             'account_number' => $accountNumber,
             'account_reference' => $accountReference,
             'description' => $description,
-            'country_code' => $countryCode,
-            'currency_code' => $currencyCode,
         ];
 
         /// Make the request
@@ -121,8 +199,8 @@ class Mwaloni
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
-            info('sendMoney request: ' . json_encode($body));
-            info('sendMoney result: ' . $result);
+            info('paybill request: ' . json_encode($body));
+            info('paybill result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -167,8 +245,8 @@ class Mwaloni
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
-            info('sendPesalink request: ' . json_encode($body));
-            info('sendPesalink result: ' . $result);
+            info('ift request: ' . json_encode($body));
+            info('ift result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -191,7 +269,7 @@ class Mwaloni
      * @return mixed
      */
 
-    public function eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode,  $amount, $description)
     {
         /// Prepare the request body
         $body = [
@@ -217,7 +295,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('eft request: ' . json_encode($body));
-            info('eft result: ' . $result);
+            info('eft result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -239,7 +317,7 @@ class Mwaloni
      * 
      * @return mixed
      */
-    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description)
     {
         /// Prepare the request body
         $body = [
@@ -265,7 +343,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('sendPesalink request: ' . json_encode($body));
-            info('sendPesalink result: ' . $result);
+            info('sendPesalink result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -288,7 +366,7 @@ class Mwaloni
      * @return mixed
      */
 
-    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description)
     {
         $body = [
             'channel' => 'rtgs',
@@ -313,7 +391,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('rtgs request: ' . json_encode($body));
-            info('rtgs result: ' . $result);
+            info('rtgs result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -347,7 +425,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('getStatus request: ' . json_encode($body));
-            info('getStatus result: ' . $result);
+            info('getStatus result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -381,7 +459,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('contactLookup request: ' . json_encode($body));
-            info('contactLookup result: ' . $result);
+            info('contactLookup result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -416,7 +494,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('sendSms request: ' . json_encode($body));
-            info('sendSms result: ' . $result);
+            info('sendSms result: ' . json_encode($result));
         }
 
         /// Return the result
