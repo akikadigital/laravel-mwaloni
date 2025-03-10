@@ -5,3 +5,7 @@
 ## v0.0.2
 
 - Updates API responses to json
+
+## v0.0.3
+
+- Updates package notes.
