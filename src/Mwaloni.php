@@ -2,7 +2,7 @@
 
 namespace Akika\LaravelMwaloni;
 
-use MwaloniConnect;
+use Akika\LaravelMwaloni\Traits\MwaloniConnect;
 
 class Mwaloni
 {
@@ -33,11 +33,13 @@ class Mwaloni
         $this->apiKey = $this->generateApiKey();
 
         /// Set the base URL based on the environment
-        if ($this->environment == 'production') {
-            $this->baseUrl = "https://wallet.mwaloni.com/api/";
-        } else {
-            $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
-        }
+        // if ($this->environment == 'production') {
+        //     $this->baseUrl = "https://wallet.mwaloni.com/api/";
+        // } else {
+        //     $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
+        // }
+
+        $this->baseUrl = "https://wallet.test/api/";
     }
 
     /**
@@ -48,6 +50,8 @@ class Mwaloni
      */
     public function fetchBalance()
     {
+        info('PASSWORD: ' . $this->password);
+
         /// Prepare the request body
         $body = [
             'service_id' => $this->serviceId,
@@ -63,7 +67,7 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Authenticate -------------------');
             info('fetchBalance request: ' . json_encode($body));
-            info('fetchBalance result: ' . $result);
+            info('fetchBalance result: ' . json_encode($result));
         }
 
         /// Return the result

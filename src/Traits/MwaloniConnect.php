@@ -1,5 +1,7 @@
 <?php
 
+namespace Akika\LaravelMwaloni\Traits;
+
 use Illuminate\Support\Facades\Http;
 
 trait MwaloniConnect
@@ -13,8 +15,8 @@ trait MwaloniConnect
 
     public function encrypt($plaintext)
     {
-        $encrypted  = openssl_encrypt($plaintext, 'AES-256-CTR', $this->apiKey, OPENSSL_RAW_DATA, "w4^dgd$%^62:)dgs");
-        return bin2hex($encrypted);
+        $ciphertext  = openssl_encrypt($plaintext, 'AES-256-CTR', $this->apiKey, OPENSSL_RAW_DATA, "w4^dgd$%^62:)dgs");
+        return bin2hex($ciphertext);
     }
 
     /**
