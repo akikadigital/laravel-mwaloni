@@ -25,6 +25,7 @@ Add the following configurations into the .env file
 ```bash
 MWALONI_ENV=
 MWALONI_DEBUG=
+MWALONI_ENCRYPTION_KEY=
 MWALONI_SERVICE_ID=
 MWALONI_USERNAME=
 MWALONI_PASSWORD=
@@ -37,7 +38,7 @@ NOTE:
 
 - The mwaloni.php config file sets the default `MWALONI_ENV` value to `sandbox`. This will always load sandbox url and credentials.
 - It also sets the default debug mode to true. When true, the package will log into the log destination provided
-- Please provide the other details in the evn or the config file as provided by Mwaloni.
+- The other variables except `MWALONI_ENV` and `MWALONI_DEBUG` will be provided by Mwaloni during onboarding.
 - When debug mode is set to true, Mwaloni will log both data object and result on every API call
 
 ## Function Responses

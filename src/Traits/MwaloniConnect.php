@@ -15,7 +15,8 @@ trait MwaloniConnect
 
     public function encrypt($plaintext)
     {
-        $ciphertext  = openssl_encrypt($plaintext, 'AES-256-CTR', $this->apiKey, OPENSSL_RAW_DATA, "w4^dgd$%^62:)dgs");
+        $encryption_key = config('mwaloni.encryption_key');
+        $ciphertext  = openssl_encrypt($plaintext, 'AES-256-CTR', $this->apiKey, OPENSSL_RAW_DATA, $encryption_key);
         return bin2hex($ciphertext);
     }
 
