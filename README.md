@@ -45,6 +45,25 @@ NOTE:
 
 All responses, will be in json format as received from the Mwaloni portal.
 
+### Sample failed response
+
+```bash
+{
+   "status":"01",
+   "message":"Service not found",
+   "balance":0
+}
+```
+
+### Sample successful transaction response
+
+```bash
+{
+   "status":"00",
+   "message":"Cashout was successful."
+}
+```
+
 ## Variables definition
 
 ```php
@@ -69,6 +88,26 @@ To initialize Mwaloni, paste the following code within your code.
 use Akika\LaravelMwaloni\Mwaloni; // Paste before class definition
 
 $mwaloni = new Mwaloni(); // Paste code where appropriate in your code.
+```
+
+### Query account balance
+
+```php
+$response = $mwaloni->fetchBalance();
+```
+
+A successful balance query response will have the below structure:
+
+```bash
+{
+   "status":"00",
+   "message":"Success",
+   "balance":3250544,
+   "balance_breakdown":{
+      "utility_balance":3250544,
+      "working_balance":0
+   }
+}
 ```
 
 ### Send money to mpesa enabled lines
