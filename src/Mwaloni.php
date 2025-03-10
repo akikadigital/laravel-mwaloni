@@ -33,13 +33,11 @@ class Mwaloni
         $this->apiKey = $this->generateApiKey();
 
         /// Set the base URL based on the environment
-        // if ($this->environment == 'production') {
-        //     $this->baseUrl = "https://wallet.mwaloni.com/api/";
-        // } else {
-        //     $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
-        // }
-
-        $this->baseUrl = "https://wallet.test/api/";
+        if ($this->environment == 'production') {
+            $this->baseUrl = "https://wallet.mwaloni.com/api/";
+        } else {
+            $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
+        }
     }
 
     /**
