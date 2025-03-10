@@ -44,6 +44,20 @@ NOTE:
 
 All responses, will be in json format as received from the Mwaloni portal.
 
+## Variables definition
+
+```php
+* @param string $orderNumber - The order number e.g. AAA0001
+* @param string $accountNumber - The account number to send money to
+* @param string $phoneNumber - The phone number to send money to
+* @param string $accountName - The name of the account holder
+* @param string $bankCode - The bank code
+* @param string $bankCountryCode - The country code of the bank
+* @param float  $amount - The amount to send
+* @param string $currencyCode - The currency code
+* @param string $description - The description of the transaction
+```
+
 ## Usage
 
 ### Initializing Mwaloni
@@ -108,18 +122,4 @@ $response = $mwaloni->getStatus($orderNumber);
 
 ```php
 $response = $mwaloni->contactLookup($phone);
-```
-
-## Variables definition
-
-```php
-* @param string $orderNumber - The order number e.g. AAA0001
-* @param string $accountNumber - The account number to send money to
-* @param string $phoneNumber - The phone number to send money to
-* @param string $accountName - The name of the account holder
-* @param string $bankCode - The bank code
-* @param string $bankCountryCode - The country code of the bank
-* @param float  $amount - The amount to send
-* @param string $currencyCode - The currency code
-* @param string $description - The description of the transaction
 ```
