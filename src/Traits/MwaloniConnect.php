@@ -2,6 +2,7 @@
 
 namespace Akika\LaravelMwaloni\Traits;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
 trait MwaloniConnect
@@ -29,11 +30,23 @@ trait MwaloniConnect
      */
     public function makeRequest($data, $end_point)
     {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post($this->baseUrl . $end_point, $data);
+        if(version_compare(app()->version(), '8.0.0', '>=')) {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($this->baseUrl . $end_point, $data);
 
-        return $response->json();
+            return $response->json();
+        } else {
+            $client = new Client();
+            $response = $client->post($this->baseUrl . $end_point, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $data,
+            ]);
+
+            return json_decode($response->getBody(), true);
+        }
     }
 
     /**

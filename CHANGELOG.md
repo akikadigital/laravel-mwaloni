@@ -14,3 +14,7 @@
 
 - Lowers platform requiremnts to allow upto laravel version 5
 - Lowers platform requiremnts to allow upto php 7.4
+
+## v0.0.5
+
+- Fixes Class 'Illuminate\Support\Facades\Http' not found on lower versions of Laravel
