@@ -309,13 +309,12 @@ class Mwaloni
      * @param string $accountName - The name of the account holder
      * @param string $bankCode - The bank code
      * @param string $bankCountryCode - The country code of the bank
-     * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
+     * @param float $amount - The amount to send
      * @param string $description - The description of the transaction
-     * 
      * @return mixed
      */
-    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description)
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $currencyCode, $amount, $description)
     {
         /// Prepare the request body
         $body = [
@@ -327,11 +326,13 @@ class Mwaloni
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
+            "bank_name" => $bankName,
             "account_number" => $accountNumber,
             "amount" => $amount,
             "currency_code" => $currencyCode,
             "order_number" => $orderNumber,
             "description" => $description,
+
         ];
 
         /// Make the request
@@ -356,6 +357,8 @@ class Mwaloni
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
      * @param string $bankCode - The bank code
+     * @param string $bankName - The name of the bank
+     * @param string $swiftCode - The swift code
      * @param string $bankCountryCode - The country code of the bank
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
@@ -364,7 +367,7 @@ class Mwaloni
      * @return mixed
      */
 
-    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description)
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $swiftCode, $bankCountryCode, $currencyCode, $amount, $description)
     {
         $body = [
             'channel' => 'rtgs',
@@ -375,6 +378,8 @@ class Mwaloni
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
+            "bank_name" => $bankName,
+            "swift_code" => $swiftCode,
             "account_number" => $accountNumber,
             "amount" => $amount,
             "currency_code" => $currencyCode,
