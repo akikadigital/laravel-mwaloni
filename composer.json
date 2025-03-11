@@ -16,10 +16,10 @@
         "Digital"
     ],
     "require": {
-        "php": "^7.4|^8.0|^8.1|^8.2",
-        "illuminate/support": "^5.0",
-        "illuminate/http": "^5.0",
-        "guzzlehttp/guzzle": "^7.5"
+        "php": ">=7.4",
+        "illuminate/support": ">=5.0",
+        "illuminate/http": ">=5.0",
+        "guzzlehttp/guzzle": ">=7.5"
     },
     "license": "MIT",
     "autoload": {
