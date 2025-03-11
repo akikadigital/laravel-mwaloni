@@ -18,3 +18,7 @@
 ## v0.0.5
 
 - Fixes Class 'Illuminate\Support\Facades\Http' not found on lower versions of Laravel
+
+## v0.0.6
+
+- Adds missinga variables to API calls

@@ -143,13 +143,13 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
 ### Send to bank via pesalink
 
 ```php
-$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description);
+$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $currencyCode, $amount, $description)
 ```
 
 ### Send to bank via rtgs
 
 ```php
-$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode, $amount, $description);
+$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $swiftCode, $bankCountryCode, $currencyCode, $amount, $description)
 ```
 
 ### Query transaction status
