@@ -38,6 +38,8 @@ class Mwaloni
             $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
         }
 
+        $this->baseUrl = "https://wallet.test/api/";
+
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
             info('API URL: ' . $this->baseUrl);
@@ -54,7 +56,11 @@ class Mwaloni
     public function setToken($token)
     {
         $this->apiToken = $token;
-        info('SET_TOKEN: ' . $this->apiToken);
+
+        if ($this->debugMode) {
+            info('------------------- Set Token -------------------');
+            info('Token: ' . $this->apiToken);
+        }
     }
 
     /**

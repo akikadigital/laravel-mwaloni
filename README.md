@@ -25,10 +25,15 @@ Add the following configurations into the .env file
 ```bash
 MWALONI_ENV=
 MWALONI_DEBUG=
-MWALONI_ENCRYPTION_KEY=
+
+# Production credentials
+MWALONI_API_KEY=
 MWALONI_SERVICE_ID=
 MWALONI_USERNAME=
 MWALONI_PASSWORD=
+
+# Sandbox credentials
+MWALONI_SANDBOX_API_KEY=
 MWALONI_SANDBOX_SERVICE_ID=
 MWALONI_SANDBOX_USERNAME=
 MWALONI_SANDBOX_PASSWORD=
@@ -51,7 +56,6 @@ All responses, will be in json format as received from the Mwaloni portal.
 {
    "status":"01",
    "message":"Service not found",
-   "balance":0
 }
 ```
 
@@ -64,20 +68,6 @@ All responses, will be in json format as received from the Mwaloni portal.
 }
 ```
 
-## Variables definition
-
-```php
-* @param string $orderNumber - The order number e.g. AAA0001
-* @param string $accountNumber - The account number to send money to
-* @param string $phoneNumber - The phone number to send money to
-* @param string $accountName - The name of the account holder
-* @param string $bankCode - The bank code
-* @param string $bankCountryCode - The country code of the bank
-* @param float  $amount - The amount to send
-* @param string $currencyCode - The currency code
-* @param string $description - The description of the transaction
-```
-
 ## Usage
 
 ### Initializing Mwaloni
@@ -88,6 +78,46 @@ To initialize Mwaloni, paste the following code within your code.
 use Akika\LaravelMwaloni\Mwaloni; // Paste before class definition
 
 $mwaloni = new Mwaloni(); // Paste code where appropriate in your code.
+```
+
+### Authentication
+
+Authentication si required in order to consume Mwaloni APIs. The function below will perform authentication.
+
+```php
+$response = $mwaloni->authenticate();
+```
+
+#### Authentication result
+
+```bash
+{
+   "status":"00",
+   "message":"Success",
+   "data":{
+      "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.xxxx.xxxxxx",
+      "tokenType":"Bearer",
+      "expiresIn":3600
+   }
+}
+```
+
+- A generated token can be used for up to 60 minutes.
+
+#### Setting token
+
+- On successful authentication, use the following function to set up the toke for use on subsequent calls.
+
+```php
+
+/**
+ * 
+   * Set the API token
+   * 
+   * @param string $token
+   */
+
+$response = $mwaloni->setToken($token); // $data->token
 ```
 
 ### Query account balance
@@ -103,9 +133,9 @@ A successful balance query response will have the below structure:
    "status":"00",
    "message":"Success",
    "balance":3250544,
-   "balance_breakdown":{
-      "utility_balance":3250544,
-      "working_balance":0
+   "balanceBreakdown":{
+      "utilityBalance":3250544,
+      "workingBalance":0
    }
 }
 ```
@@ -113,53 +143,202 @@ A successful balance query response will have the below structure:
 ### Send money to mpesa enabled lines
 
 ```php
+/**
+ * 
+   * Send money to a mobile number
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $phoneNumber - The phone number
+   * @param float $amount - The amount to send
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+
 $response = $mwaloni->mobile($orderNumber, $phoneNumber, $amount, $description);
 ```
 
 ### Send to mpesa till number
 
 ```php
+
+/**
+   * 
+   * Send money to a till number
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $accountName - The name of the account holder
+   * @param string $accountNumber - The till number
+   * @param float $amount - The amount to send
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+
 $response = $mwaloni->till($orderNumber, $accountName, $accountNumber, $amount, $description);
 ```
 
 ### Send to mpesa paybill
 
 ```php
+/**
+   * 
+   * Send money to a paybill number
+   * 
+   * @param string $accountReference - The account reference
+   * @param string $orderNumber - The order number
+   * @param string $accountName - The name of the account holder
+   * @param string $accountNumber - The paybill number
+   * @param float $amount - The amount to send
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+    
 $response = $mwaloni->paybill($accountReference, $orderNumber, $accountName, $accountNumber, $amount, $description);
 ```
 
 ### Send to bank via ift
 
 ```php
-$response = $mwaloni->ift($orderNumber, $accountNumber, $accountName, $amount, $description);
+/**
+ * 
+   * Send money to a bank account through ift
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $accountName - The name of the account holder
+   * @param string $accountNumber - The account number
+   * @param string $address - The address of the account holder
+   * @param string $countryCode - The country code
+   * @param float $amount - The amount to send
+   * @param string $currencyCode - The currency code
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+
+$response = $mwaloni->ift($orderNumber, $accountName, $accountNumber, $address, $countryCode, $amount, $currencyCode, $description);
 ```
 
 ### Send to bank via eft
 
 ```php
-$response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode,  $amount, $description);
+
+/**
+ * 
+   * Send money to a bank account through eft
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $accountNumber - The account number
+   * @param string $accountName - The name of the account holder
+   * @param string $bankCode - The bank code
+   * @param string $bankName - The name of the bank
+   * @param string $bankCountryCode - The country code of the bank
+   * @param string $bankCIF - The CIF/Swift Code of the bank
+   * @param string $accountAddress - The address of the account holder
+   * @param float $amount - The amount to send
+   * @param string $currencyCode - The currency code
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+
+$response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $accountAddress, $amount, $currencyCode, $description);
 ```
 
 ### Send to bank via pesalink
 
 ```php
-$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $currencyCode, $amount, $description)
+
+/**
+ * 
+   * Send money to a bank account through pesalink
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $accountNumber - The account number
+   * @param string $accountName - The name of the account holder
+   * @param string $bankCode - The bank code
+   * @param string $bankName - The name of the bank
+   * @param string $bankCountryCode - The country code of the bank
+   * @param string $bankCIF - The CIF/Swift Code of the bank
+   * @param string $address - The address of the account holder
+   * @param float $amount - The amount to send
+   * @param string $currencyCode - The currency code
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+
+$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description);
 ```
 
 ### Send to bank via rtgs
 
 ```php
-$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $swiftCode, $bankCountryCode, $currencyCode, $amount, $description)
+
+/**
+ * 
+   * Send money to a bank account through rtgs
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $accountNumber - The account number
+   * @param string $accountName - The name of the account holder
+   * @param string $bankCode - The bank code
+   * @param string $bankName - The name of the bank
+   * @param string $address - The address of the account holder
+   * @param string $swiftCode - The swift code of the bank
+   * @param string $bankCountryCode - The country code of the bank
+   * @param float $amount - The amount to send
+   * @param string $currencyCode - The currency code
+   * @param string $description - The description of the transaction
+   * 
+   * @return mixed
+   */
+$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $address, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description);
 ```
 
 ### Query transaction status
 
 ```php
+
+/**
+ * 
+   * Fetch the status of a transaction
+   * 
+   * @param string $orderNumber
+   * 
+   * @return mixed
+   */
 $response = $mwaloni->getStatus($orderNumber);
 ```
 
 ### Perform contact lookup
 
 ```php
+/**
+ * 
+   * Fetch the status of a transaction
+   * 
+   * @param string $orderNumber
+   * 
+   * @return mixed
+   */
 $response = $mwaloni->contactLookup($contact);
+```
+
+### Send SMS
+
+```php
+
+/**
+ * 
+   * Send an SMS
+   * 
+   * @param string $phone
+   * @param string $message
+   * 
+   * @return mixed
+   */
+
+$response = $mwaloni->sendSms($phone, $message);
 ```

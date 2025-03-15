@@ -22,3 +22,7 @@
 ## v0.0.6
 
 - Adds missinga variables to API calls
+
+## v0.0.7
+
+- Adds API authentication
