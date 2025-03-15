@@ -26,3 +26,7 @@
 ## v0.0.7
 
 - Adds API authentication
+
+## v0.0.8
+
+- Go live for v0.0.8
