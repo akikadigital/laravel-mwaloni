@@ -16,6 +16,9 @@ trait MwaloniConnect
 
     public function encrypt($plaintext)
     {
+        info('Encrypting plaintext...');
+        info($this->apiKey);
+
         $encryption_key = config('mwaloni.encryption_key');
         $ciphertext  = openssl_encrypt($plaintext, 'AES-256-CTR', $this->apiKey, OPENSSL_RAW_DATA, $encryption_key);
         return bin2hex($ciphertext);
@@ -30,7 +33,7 @@ trait MwaloniConnect
      */
     public function makeRequest($data, $end_point)
     {
-        if(version_compare(app()->version(), '8.0.0', '>=')) {
+        if (version_compare(app()->version(), '8.0.0', '>=')) {
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
             ])->post($this->baseUrl . $end_point, $data);

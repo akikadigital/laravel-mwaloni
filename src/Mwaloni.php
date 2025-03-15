@@ -33,10 +33,16 @@ class Mwaloni
         $this->apiKey = $this->generateApiKey();
 
         /// Set the base URL based on the environment
-        if ($this->environment == 'production') {
-            $this->baseUrl = "https://wallet.mwaloni.com/api/";
-        } else {
-            $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
+        // if ($this->environment == 'production') {
+        //     $this->baseUrl = "https://wallet.mwaloni.com/api/";
+        // } else {
+        //     $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
+        // }
+        $this->baseUrl = "https://wallet.test/api/";
+
+        if ($this->debugMode) {
+            info('------------------- Initiliazing Mwaloni -------------------');
+            info('API URL: ' . $this->baseUrl);
         }
     }
 
@@ -50,20 +56,20 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey
         ];
 
         /// Make the request
-        $result = $this->makeRequest($body, 'fetch-service-balance');
+        $result = $this->makeRequest($body, "fetch-service-balance");
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
-            info('fetchBalance request: ' . json_encode($body));
-            info('fetchBalance result: ' . json_encode($result));
+            info("------------------- Authenticate -------------------");
+            info("fetchBalance request: " . json_encode($body));
+            info("fetchBalance result: " . json_encode($result));
         }
 
         /// Return the result
@@ -207,32 +213,35 @@ class Mwaloni
 
     /**
      * 
-     * Send money to a mobile number
+     * Send money to a bank account through ift
      * 
      * @param string $orderNumber - The order number
+     * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
-     * @param string $accountNumber - The mobile number, till number or paybill number
+     * @param string $address - The address of the account holder
+     * @param string $countryCode - The country code of the bank
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
-     * @param string $countryCode - The country code
      * @param string $description - The description of the transaction
-     * @param string $accountReference - The account reference
      * 
      * @return mixed
      */
 
-    public function ift($orderNumber, $accountNumber, $accountName, $amount, $description)
+    public function ift($orderNumber, $accountName, $accountNumber, $address, $countryCode, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
-            'channel' => 'ift',
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
+            "channel" => "ift",
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
             "account_name" => $accountName,
             "account_number" => $accountNumber,
+            "address" => $address,
+            "country_code" => $countryCode,
             "amount" => $amount,
+            "currency_code" => $currencyCode,
             "order_number" => $orderNumber,
             "description" => $description,
         ];
@@ -253,13 +262,16 @@ class Mwaloni
 
     /**
      * 
-     * Send money to a bank account
+     * Send money to a bank account through eft
      * 
      * @param string $orderNumber - The order number
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
      * @param string $bankCode - The bank code
+     * @param string $bankName - The name of the bank
      * @param string $bankCountryCode - The country code of the bank
+     * @param string $bankCIF - The CIF/Swift Code of the bank
+     * @param string $accountAddress - The address of the account holder
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
      * @param string $description - The description of the transaction
@@ -267,18 +279,21 @@ class Mwaloni
      * @return mixed
      */
 
-    public function eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankCountryCode, $currencyCode,  $amount, $description)
+    public function eft($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $accountAddress, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
-            'channel' => 'eft',
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
+            "channel" => "eft",
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
+            "bank_name" => $bankName,
+            "bank_cif" => $bankCIF,
+            "address" => $accountAddress,
             "account_number" => $accountNumber,
             "amount" => $amount,
             "currency_code" => $currencyCode,
@@ -302,37 +317,43 @@ class Mwaloni
 
     /**
      * 
-     * Send money to a bank account
+     * Send money to a bank account through pesalink
      * 
      * @param string $orderNumber - The order number
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
      * @param string $bankCode - The bank code
+     * @param string $bankName - The name of the bank
      * @param string $bankCountryCode - The country code of the bank
-     * @param string $currencyCode - The currency code
+     * @param string $bankCIF - The CIF/Swift Code of the bank
+     * @param string $address - The address of the account holder
      * @param float $amount - The amount to send
+     * @param string $currencyCode - The currency code
      * @param string $description - The description of the transaction
+     * 
      * @return mixed
      */
-    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $currencyCode, $amount, $description)
+
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
             'channel' => 'pesalink',
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
             "bank_name" => $bankName,
+            "bank_cif" => $bankCIF,
             "account_number" => $accountNumber,
+            "address" => $address,
             "amount" => $amount,
             "currency_code" => $currencyCode,
             "order_number" => $orderNumber,
             "description" => $description,
-
         ];
 
         /// Make the request
@@ -351,34 +372,38 @@ class Mwaloni
 
     /**
      * 
-     * Send money to a bank account
+     * Send money to a bank account through rtgs
      * 
      * @param string $orderNumber - The order number
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
      * @param string $bankCode - The bank code
      * @param string $bankName - The name of the bank
-     * @param string $swiftCode - The swift code
+     * @param string $swiftCode - The swift code of the bank
      * @param string $bankCountryCode - The country code of the bank
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
      * @param string $description - The description of the transaction
+     * @param string $bankCIF - The CIF/Swift Code of the bank
+     * @param string $address - The address of the account holder
      * 
      * @return mixed
      */
 
-    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $swiftCode, $bankCountryCode, $currencyCode, $amount, $description)
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description, $bankCIF = '', $address = '')
     {
         $body = [
-            'channel' => 'rtgs',
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
+            "channel" => "rtgs",
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
+            "address" => $address,
             "bank_code" => $bankCode,
             "bank_name" => $bankName,
+            "bank_cif" => $bankCIF,
             "swift_code" => $swiftCode,
             "account_number" => $accountNumber,
             "amount" => $amount,
@@ -414,11 +439,11 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
-            'order_number' => $orderNumber,
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
+            "order_number" => $orderNumber,
         ];
 
         /// Make the request
@@ -448,11 +473,11 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
-            'phone_number' => $phone,
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
+            "phone_number" => $phone,
         ];
 
         /// Make the request
@@ -482,12 +507,12 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
-            'phone_number' => $phone,
-            'message' => $message,
+            "service_id" => $this->serviceId,
+            "username" => $this->username,
+            "password" => $this->encrypt($this->password),
+            "key" => $this->apiKey,
+            "phone_number" => $phone,
+            "message" => $message,
         ];
 
         /// Make the request
