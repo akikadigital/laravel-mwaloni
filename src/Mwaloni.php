@@ -38,6 +38,8 @@ class Mwaloni
             $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
         }
 
+        $this->baseUrl = "https://wallet.test/api/";
+
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
             info('API URL: ' . $this->baseUrl);
