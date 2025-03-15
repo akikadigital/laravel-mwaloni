@@ -30,3 +30,7 @@
 ## v0.0.8
 
 - Go live for v0.0.8
+
+## v0.0.9
+
+- Makes authentication variables dynamic variables dynamic
