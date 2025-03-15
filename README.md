@@ -28,13 +28,11 @@ MWALONI_DEBUG=
 
 # Production credentials
 MWALONI_API_KEY=
-MWALONI_SERVICE_ID=
 MWALONI_USERNAME=
 MWALONI_PASSWORD=
 
 # Sandbox credentials
 MWALONI_SANDBOX_API_KEY=
-MWALONI_SANDBOX_SERVICE_ID=
 MWALONI_SANDBOX_USERNAME=
 MWALONI_SANDBOX_PASSWORD=
 ```
@@ -77,7 +75,17 @@ To initialize Mwaloni, paste the following code within your code.
 ```php
 use Akika\LaravelMwaloni\Mwaloni; // Paste before class definition
 
-$mwaloni = new Mwaloni(); // Paste code where appropriate in your code.
+/**
+ *
+   * Initialize the Mwaloni class using credentials provided
+   *
+   * @param string $serviceId
+   * @param string $username
+   * @param string $password
+   * @param string $apiKey
+   */
+
+$mwaloni = new Mwaloni($serviceId, $username, $password, $apiKey); // Paste code where appropriate in your code.
 ```
 
 ### Authentication
@@ -111,9 +119,9 @@ $response = $mwaloni->authenticate();
 ```php
 
 /**
- * 
+ *
    * Set the API token
-   * 
+   *
    * @param string $token
    */
 
@@ -144,14 +152,14 @@ A successful balance query response will have the below structure:
 
 ```php
 /**
- * 
+ *
    * Send money to a mobile number
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $phoneNumber - The phone number
    * @param float $amount - The amount to send
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 
@@ -163,15 +171,15 @@ $response = $mwaloni->mobile($orderNumber, $phoneNumber, $amount, $description);
 ```php
 
 /**
-   * 
+   *
    * Send money to a till number
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $accountName - The name of the account holder
    * @param string $accountNumber - The till number
    * @param float $amount - The amount to send
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 
@@ -182,19 +190,19 @@ $response = $mwaloni->till($orderNumber, $accountName, $accountNumber, $amount, 
 
 ```php
 /**
-   * 
+   *
    * Send money to a paybill number
-   * 
+   *
    * @param string $accountReference - The account reference
    * @param string $orderNumber - The order number
    * @param string $accountName - The name of the account holder
    * @param string $accountNumber - The paybill number
    * @param float $amount - The amount to send
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
-    
+
 $response = $mwaloni->paybill($accountReference, $orderNumber, $accountName, $accountNumber, $amount, $description);
 ```
 
@@ -202,9 +210,9 @@ $response = $mwaloni->paybill($accountReference, $orderNumber, $accountName, $ac
 
 ```php
 /**
- * 
+ *
    * Send money to a bank account through ift
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $accountName - The name of the account holder
    * @param string $accountNumber - The account number
@@ -213,7 +221,7 @@ $response = $mwaloni->paybill($accountReference, $orderNumber, $accountName, $ac
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 
@@ -225,9 +233,9 @@ $response = $mwaloni->ift($orderNumber, $accountName, $accountNumber, $address, 
 ```php
 
 /**
- * 
+ *
    * Send money to a bank account through eft
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $accountNumber - The account number
    * @param string $accountName - The name of the account holder
@@ -239,7 +247,7 @@ $response = $mwaloni->ift($orderNumber, $accountName, $accountNumber, $address, 
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 
@@ -251,9 +259,9 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
 ```php
 
 /**
- * 
+ *
    * Send money to a bank account through pesalink
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $accountNumber - The account number
    * @param string $accountName - The name of the account holder
@@ -265,7 +273,7 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 
@@ -277,9 +285,9 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
 ```php
 
 /**
- * 
+ *
    * Send money to a bank account through rtgs
-   * 
+   *
    * @param string $orderNumber - The order number
    * @param string $accountNumber - The account number
    * @param string $accountName - The name of the account holder
@@ -291,7 +299,7 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
    * @param string $description - The description of the transaction
-   * 
+   *
    * @return mixed
    */
 $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $address, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description);
@@ -302,11 +310,11 @@ $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode
 ```php
 
 /**
- * 
+ *
    * Fetch the status of a transaction
-   * 
+   *
    * @param string $orderNumber
-   * 
+   *
    * @return mixed
    */
 $response = $mwaloni->getStatus($orderNumber);
@@ -316,11 +324,11 @@ $response = $mwaloni->getStatus($orderNumber);
 
 ```php
 /**
- * 
+ *
    * Fetch the status of a transaction
-   * 
+   *
    * @param string $orderNumber
-   * 
+   *
    * @return mixed
    */
 $response = $mwaloni->contactLookup($contact);
@@ -331,12 +339,12 @@ $response = $mwaloni->contactLookup($contact);
 ```php
 
 /**
- * 
+ *
    * Send an SMS
-   * 
+   *
    * @param string $phone
    * @param string $message
-   * 
+   *
    * @return mixed
    */
 

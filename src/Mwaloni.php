@@ -19,14 +19,21 @@ class Mwaloni
     public $baseUrl = "";
     public $debugMode = false;
 
-    /// Mwaloni Constructor
-    public function __construct()
+    /**
+     * 
+     * Initialize the Mwaloni class using credentials provided
+     * 
+     * @param string $serviceId
+     * @param string $username
+     * @param string $password
+     * @param string $apiKey
+     */
+    public function __construct($serviceId, $username, $password, $apiKey)
     {
-        $this->environment = config('mwaloni.env');
-        $this->serviceId = config('mwaloni.' . $this->environment . '.service_id');
-        $this->username = config('mwaloni.' . $this->environment . '.username');
-        $this->password = config('mwaloni.' . $this->environment . '.password');
-        $this->apiKey = config('mwaloni.' . $this->environment . '.api_key');
+        $this->serviceId = $serviceId;
+        $this->username = $username;
+        $this->password = $password;
+        $this->apiKey = $apiKey;
 
         /// Set the debug mode
         $this->debugMode = config('mwaloni.debug');
@@ -41,6 +48,23 @@ class Mwaloni
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
             info('API URL: ' . $this->baseUrl);
+        }
+    }
+
+    /**
+     * 
+     * Set the serviceId
+     * 
+     * @param string $serviceId
+     */
+
+    public function setServiceId($serviceId)
+    {
+        $this->serviceId = $serviceId;
+
+        if ($this->debugMode) {
+            info('------------------- Set Service ID -------------------');
+            info('Service ID: ' . $this->serviceId);
         }
     }
 
