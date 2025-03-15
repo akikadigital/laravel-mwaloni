@@ -14,6 +14,7 @@ class Mwaloni
     public $username = "";
     public $password = "";
     public $apiKey = "";
+    public $apiToken = "";
     public $serviceId = "";
     public $baseUrl = "";
     public $debugMode = false;
@@ -25,20 +26,17 @@ class Mwaloni
         $this->serviceId = config('mwaloni.' . $this->environment . '.service_id');
         $this->username = config('mwaloni.' . $this->environment . '.username');
         $this->password = config('mwaloni.' . $this->environment . '.password');
+        $this->apiKey = config('mwaloni.' . $this->environment . '.api_key');
 
         /// Set the debug mode
         $this->debugMode = config('mwaloni.debug');
 
-        /// Generate the API key
-        $this->apiKey = $this->generateApiKey();
-
-        /// Set the base URL based on the environment
-        // if ($this->environment == 'production') {
-        //     $this->baseUrl = "https://wallet.mwaloni.com/api/";
-        // } else {
-        //     $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
-        // }
-        $this->baseUrl = "https://wallet.test/api/";
+        // Set the base URL based on the environment
+        if ($this->environment == 'production') {
+            $this->baseUrl = "https://wallet.mwaloni.com/api/";
+        } else {
+            $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
+        }
 
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
@@ -48,22 +46,77 @@ class Mwaloni
 
     /**
      * 
+     * Set the API token
+     * 
+     * @param string $token
+     */
+
+    public function setToken($token)
+    {
+        $this->apiToken = $token;
+        info('SET_TOKEN: ' . $this->apiToken);
+    }
+
+    /**
+     * 
+     * Authenticate the user
+     * 
+     * @return mixed
+     */
+
+    public function authenticate()
+    {
+        $body = [
+            "username" => $this->username,
+            "password" => $this->password
+        ];
+
+        // validation
+        if (empty($this->username) || empty($this->password)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
+        /// Make the request
+        $result = $this->makeRequest($body, "authenticate");
+
+        // Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info("------------------- Authenticate -------------------");
+            info("fetchBalance request: " . json_encode($body));
+            info("fetchBalance result: " . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
      * Fetch the balance of the service
      * 
      * @return mixed
      */
+
     public function fetchBalance()
     {
         /// Prepare the request body
         $body = [
             "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey
         ];
 
+        // validation
+        if (empty($this->serviceId)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
         /// Make the request
-        $result = $this->makeRequest($body, "fetch-service-balance");
+        $result = $this->makeRequest($body, "get-balance");
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
@@ -81,7 +134,7 @@ class Mwaloni
      * Send money to a mobile number
      * 
      * @param string $orderNumber - The order number
-     * @param string $phoneNumber - The mobile number
+     * @param string $phoneNumber - The phone number
      * @param float $amount - The amount to send
      * @param string $description - The description of the transaction
      * 
@@ -94,9 +147,6 @@ class Mwaloni
         $body = [
             'channel' => 'daraja-mobile',
             'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
             'order_number' => $orderNumber,
             'amount' => $amount,
             'account_number' => $phoneNumber,
@@ -104,6 +154,14 @@ class Mwaloni
             'country_code' => "KE",
             'currency_code' => "KES",
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($phoneNumber) || empty($amount) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -127,8 +185,6 @@ class Mwaloni
      * @param string $accountName - The name of the account holder
      * @param string $accountNumber - The till number
      * @param float $amount - The amount to send
-     * @param string $currencyCode - The currency code
-     * @param string $countryCode - The country code
      * @param string $description - The description of the transaction
      * 
      * @return mixed
@@ -140,15 +196,20 @@ class Mwaloni
         $body = [
             'channel' => 'daraja-till',
             'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
             'order_number' => $orderNumber,
             'amount' => $amount,
             'account_name' => $accountName,
             'account_number' => $accountNumber,
             'description' => $description,
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountName) || empty($accountNumber) || empty($amount) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -166,16 +227,14 @@ class Mwaloni
 
     /**
      * 
-     * Send money to a paybill account
+     * Send money to a paybill number
      * 
+     * @param string $accountReference - The account reference
      * @param string $orderNumber - The order number
      * @param string $accountName - The name of the account holder
      * @param string $accountNumber - The paybill number
      * @param float $amount - The amount to send
-     * @param string $currencyCode - The currency code
-     * @param string $countryCode - The country code
      * @param string $description - The description of the transaction
-     * @param string $accountReference - The account reference
      * 
      * @return mixed
      */
@@ -186,9 +245,6 @@ class Mwaloni
         $body = [
             'channel' => 'daraja-paybill',
             'service_id' => $this->serviceId,
-            'username' => $this->username,
-            'password' => $this->encrypt($this->password),
-            'key' => $this->apiKey,
             'order_number' => $orderNumber,
             'amount' => $amount,
             'account_name' => $accountName,
@@ -196,6 +252,14 @@ class Mwaloni
             'account_reference' => $accountReference,
             'description' => $description,
         ];
+
+        // validation
+        if (empty($accountReference) || empty($orderNumber) || empty($accountName) || empty($accountNumber) || empty($amount) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -216,10 +280,10 @@ class Mwaloni
      * Send money to a bank account through ift
      * 
      * @param string $orderNumber - The order number
-     * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
+     * @param string $accountNumber - The account number
      * @param string $address - The address of the account holder
-     * @param string $countryCode - The country code of the bank
+     * @param string $countryCode - The country code
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
      * @param string $description - The description of the transaction
@@ -233,9 +297,6 @@ class Mwaloni
         $body = [
             "channel" => "ift",
             "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
             "account_name" => $accountName,
             "account_number" => $accountNumber,
             "address" => $address,
@@ -245,6 +306,14 @@ class Mwaloni
             "order_number" => $orderNumber,
             "description" => $description,
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountName) || empty($accountNumber) || empty($address) || empty($countryCode) || empty($amount) || empty($currencyCode) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -285,9 +354,6 @@ class Mwaloni
         $body = [
             "channel" => "eft",
             "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
@@ -300,6 +366,14 @@ class Mwaloni
             "order_number" => $orderNumber,
             "description" => $description,
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($accountAddress) || empty($amount) || empty($currencyCode) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -340,9 +414,6 @@ class Mwaloni
         $body = [
             'channel' => 'pesalink',
             "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "bank_code" => $bankCode,
@@ -355,6 +426,14 @@ class Mwaloni
             "order_number" => $orderNumber,
             "description" => $description,
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($address) || empty($amount) || empty($currencyCode) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -394,9 +473,6 @@ class Mwaloni
         $body = [
             "channel" => "rtgs",
             "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "address" => $address,
@@ -410,6 +486,14 @@ class Mwaloni
             "order_number" => $orderNumber,
             "description" => $description,
         ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($bankName) || empty($address) || empty($swiftCode) || empty($bankCountryCode) || empty($amount) || empty($currencyCode) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -438,15 +522,19 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
-            "order_number" => $orderNumber,
+            "orderNumber" => $orderNumber,
         ];
 
+        // validation
+        if (empty($orderNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
         /// Make the request
-        $result = $this->makeRequest($body, 'fetch-transaction-status');
+        $result = $this->makeRequest($body, 'get-transaction-status');
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
@@ -468,16 +556,20 @@ class Mwaloni
      * @return mixed
      */
 
-    public function contactLookup($phone)
+    public function contactLookup($contact)
     {
         /// Prepare the request body
         $body = [
-            "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
-            "phone_number" => $phone,
+            "contact" => $contact,
         ];
+
+        // validation
+        if (empty($contact)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
 
         /// Make the request
         $result = $this->makeRequest($body, 'contact-lookup');
@@ -506,16 +598,20 @@ class Mwaloni
     {
         /// Prepare the request body
         $body = [
-            "service_id" => $this->serviceId,
-            "username" => $this->username,
-            "password" => $this->encrypt($this->password),
-            "key" => $this->apiKey,
-            "phone_number" => $phone,
+            "phoneNumber" => $phone,
             "message" => $message,
         ];
 
+        // validation
+        if (empty($phone) || empty($message)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
         /// Make the request
-        $result = $this->makeRequest($body, 'api-send-sms');
+        $result = $this->makeRequest($body, 'send-sms');
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {

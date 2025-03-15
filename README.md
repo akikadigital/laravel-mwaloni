@@ -161,5 +161,5 @@ $response = $mwaloni->getStatus($orderNumber);
 ### Perform contact lookup
 
 ```php
-$response = $mwaloni->contactLookup($phone);
+$response = $mwaloni->contactLookup($contact);
 ```
