@@ -34,3 +34,7 @@
 ## v0.0.9
 
 - Makes authentication variables dynamic variables dynamic
+
+## v0.1.0
+
+- Updates fetching of environments
