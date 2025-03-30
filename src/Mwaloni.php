@@ -35,6 +35,8 @@ class Mwaloni
         $this->password = $password;
         $this->apiKey = $apiKey;
 
+        $this->environment = config('mwaloni.env');
+
         /// Set the debug mode
         $this->debugMode = config('mwaloni.debug');
 
