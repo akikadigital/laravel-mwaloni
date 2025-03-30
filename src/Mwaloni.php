@@ -232,7 +232,7 @@ class Mwaloni
         ];
 
         // validation
-        if (empty($orderNumber) || empty($accountName) || empty($accountNumber) || empty($amount) || empty($description)) {
+        if (empty($orderNumber) || empty($accountNumber) || empty($amount) || empty($description)) {
             return [
                 "status" => "error",
                 "message" => "Missing required details"
@@ -282,7 +282,7 @@ class Mwaloni
         ];
 
         // validation
-        if (empty($accountReference) || empty($orderNumber) || empty($accountName) || empty($accountNumber) || empty($amount) || empty($description)) {
+        if (empty($accountReference) || empty($orderNumber) || empty($accountNumber) || empty($amount) || empty($description)) {
             return [
                 "status" => "error",
                 "message" => "Missing required details"

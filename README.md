@@ -25,16 +25,6 @@ Add the following configurations into the .env file
 ```bash
 MWALONI_ENV=
 MWALONI_DEBUG=
-
-# Production credentials
-MWALONI_API_KEY=
-MWALONI_USERNAME=
-MWALONI_PASSWORD=
-
-# Sandbox credentials
-MWALONI_SANDBOX_API_KEY=
-MWALONI_SANDBOX_USERNAME=
-MWALONI_SANDBOX_PASSWORD=
 ```
 
 NOTE:
