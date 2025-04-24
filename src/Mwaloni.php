@@ -456,7 +456,7 @@ class Mwaloni
         ];
 
         // validation
-        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($address) || empty($amount) || empty($currencyCode) || empty($description)) {
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($address) || empty($amount) || empty($currencyCode) || empty($description)) {
             return [
                 "status" => "error",
                 "message" => "Missing required details"

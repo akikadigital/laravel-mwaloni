@@ -42,3 +42,7 @@
 ## v0.1.1
 
 - Updates pesalink payments
+
+## v0.1.2
+
+- Updates payment validations
