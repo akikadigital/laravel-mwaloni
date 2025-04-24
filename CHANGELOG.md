@@ -38,3 +38,7 @@
 ## v0.1.0
 
 - Updates fetching of environments
+
+## v0.1.1
+
+- Updates pesalink payments

@@ -255,7 +255,6 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
    * @param string $orderNumber - The order number
    * @param string $accountNumber - The account number
    * @param string $accountName - The name of the account holder
-   * @param string $bankCode - The bank code
    * @param string $bankName - The name of the bank
    * @param string $bankCountryCode - The country code of the bank
    * @param string $bankCIF - The CIF/Swift Code of the bank
@@ -267,7 +266,7 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
    * @return mixed
    */
 
-$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description);
+$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description);
 ```
 
 ### Send to bank via rtgs

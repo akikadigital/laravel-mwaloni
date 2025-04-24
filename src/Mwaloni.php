@@ -426,7 +426,6 @@ class Mwaloni
      * @param string $orderNumber - The order number
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
-     * @param string $bankCode - The bank code
      * @param string $bankName - The name of the bank
      * @param string $bankCountryCode - The country code of the bank
      * @param string $bankCIF - The CIF/Swift Code of the bank
@@ -438,7 +437,7 @@ class Mwaloni
      * @return mixed
      */
 
-    public function pesalink($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description)
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
@@ -446,7 +445,6 @@ class Mwaloni
             "service_id" => $this->serviceId,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
-            "bank_code" => $bankCode,
             "bank_name" => $bankName,
             "bank_cif" => $bankCIF,
             "account_number" => $accountNumber,
@@ -506,9 +504,7 @@ class Mwaloni
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
             "address" => $address,
-            "bank_code" => $bankCode,
             "bank_name" => $bankName,
-            "bank_cif" => $swiftCode,
             "swift_code" => $swiftCode,
             "account_number" => $accountNumber,
             "amount" => $amount,
