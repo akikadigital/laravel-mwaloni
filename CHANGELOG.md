@@ -46,3 +46,7 @@
 ## v0.1.2
 
 - Updates payment validations
+
+## v0.1.3
+
+- Updates pesalink and rtgs based on NCBA updates

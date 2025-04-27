@@ -429,7 +429,6 @@ class Mwaloni
      * @param string $bankName - The name of the bank
      * @param string $bankCountryCode - The country code of the bank
      * @param string $bankCIF - The CIF/Swift Code of the bank
-     * @param string $address - The address of the account holder
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
      * @param string $description - The description of the transaction
@@ -437,7 +436,7 @@ class Mwaloni
      * @return mixed
      */
 
-    public function pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description)
+    public function pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $amount, $currencyCode, $description)
     {
         /// Prepare the request body
         $body = [
@@ -448,7 +447,6 @@ class Mwaloni
             "bank_name" => $bankName,
             "bank_cif" => $bankCIF,
             "account_number" => $accountNumber,
-            "address" => $address,
             "amount" => $amount,
             "currency_code" => $currencyCode,
             "order_number" => $orderNumber,
@@ -456,12 +454,17 @@ class Mwaloni
         ];
 
         // validation
-        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($address) || empty($amount) || empty($currencyCode) || empty($description)) {
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankName) || empty($bankCountryCode) || empty($bankCIF) || empty($amount) || empty($currencyCode) || empty($description)) {
             return [
                 "status" => "error",
                 "message" => "Missing required details"
             ];
         }
+
+        return [
+            "status" => "success",
+            "message" => "Ready to proceed"
+        ];
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
@@ -484,9 +487,7 @@ class Mwaloni
      * @param string $orderNumber - The order number
      * @param string $accountNumber - The account number
      * @param string $accountName - The name of the account holder
-     * @param string $bankCode - The bank code
      * @param string $bankName - The name of the bank
-     * @param string $address - The address of the account holder
      * @param string $swiftCode - The swift code of the bank
      * @param string $bankCountryCode - The country code of the bank
      * @param float $amount - The amount to send
@@ -496,16 +497,15 @@ class Mwaloni
      * @return mixed
      */
 
-    public function rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $address, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description)
     {
         $body = [
             "channel" => "rtgs",
             "service_id" => $this->serviceId,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
-            "address" => $address,
             "bank_name" => $bankName,
-            "swift_code" => $swiftCode,
+            "bank_cif" => $swiftCode,
             "account_number" => $accountNumber,
             "amount" => $amount,
             "currency_code" => $currencyCode,
@@ -514,12 +514,17 @@ class Mwaloni
         ];
 
         // validation
-        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($bankName) || empty($address) || empty($swiftCode) || empty($bankCountryCode) || empty($amount) || empty($currencyCode) || empty($description)) {
+        if (empty($orderNumber) || empty($accountNumber) || empty($accountName) || empty($bankName) || empty($swiftCode) || empty($bankCountryCode) || empty($amount) || empty($currencyCode) || empty($description)) {
             return [
                 "status" => "error",
                 "message" => "Missing required details"
             ];
         }
+
+        return [
+            "status" => "success",
+            "message" => "Ready to proceed"
+        ];
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');

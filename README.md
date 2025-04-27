@@ -249,7 +249,7 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
 ```php
 
 /**
- *
+   *
    * Send money to a bank account through pesalink
    *
    * @param string $orderNumber - The order number
@@ -258,15 +258,14 @@ $response = $mwaloni->eft($orderNumber, $accountNumber, $accountName, $bankCode,
    * @param string $bankName - The name of the bank
    * @param string $bankCountryCode - The country code of the bank
    * @param string $bankCIF - The CIF/Swift Code of the bank
-   * @param string $address - The address of the account holder
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
    * @param string $description - The description of the transaction
    *
    * @return mixed
-   */
+*/
 
-$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $address, $amount, $currencyCode, $description);
+$response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bankName, $bankCountryCode, $bankCIF, $amount, $currencyCode, $description);
 ```
 
 ### Send to bank via rtgs
@@ -274,15 +273,13 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
 ```php
 
 /**
- *
+   *
    * Send money to a bank account through rtgs
    *
    * @param string $orderNumber - The order number
    * @param string $accountNumber - The account number
    * @param string $accountName - The name of the account holder
-   * @param string $bankCode - The bank code
    * @param string $bankName - The name of the bank
-   * @param string $address - The address of the account holder
    * @param string $swiftCode - The swift code of the bank
    * @param string $bankCountryCode - The country code of the bank
    * @param float $amount - The amount to send
@@ -290,8 +287,9 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
    * @param string $description - The description of the transaction
    *
    * @return mixed
-   */
-$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankCode, $bankName, $address, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description);
+*/
+
+$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description);
 ```
 
 ### Query transaction status
