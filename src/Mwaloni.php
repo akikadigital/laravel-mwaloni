@@ -461,11 +461,6 @@ class Mwaloni
             ];
         }
 
-        return [
-            "status" => "success",
-            "message" => "Ready to proceed"
-        ];
-
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
 
@@ -520,11 +515,6 @@ class Mwaloni
                 "message" => "Missing required details"
             ];
         }
-
-        return [
-            "status" => "success",
-            "message" => "Ready to proceed"
-        ];
 
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
