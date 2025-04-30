@@ -50,3 +50,11 @@
 ## v0.1.3
 
 - Updates pesalink and rtgs based on NCBA updates
+
+## v0.1.4
+
+- Updates pesalink and rtgs based on NCBA updates
+
+## v0.1.5
+
+-  Adds amount and phone number validation

@@ -193,6 +193,22 @@ class Mwaloni
             ];
         }
 
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // the last 10 characters of phone number must be numeric
+        if (!is_numeric(substr($phoneNumber, -10))) {
+            return [
+                "status" => "error",
+                "message" => "Phone number must be numeric"
+            ];
+        }
+
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
 
@@ -241,6 +257,23 @@ class Mwaloni
             ];
         }
 
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if(!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
+            ];
+        }
+
+
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
 
@@ -288,6 +321,22 @@ class Mwaloni
             return [
                 "status" => "error",
                 "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if (!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
             ];
         }
 
@@ -342,6 +391,22 @@ class Mwaloni
             return [
                 "status" => "error",
                 "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if (!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
             ];
         }
 
@@ -405,6 +470,22 @@ class Mwaloni
             ];
         }
 
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if (!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
+            ];
+        }
+
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
 
@@ -461,6 +542,22 @@ class Mwaloni
             ];
         }
 
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if (!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
+            ];
+        }
+
         /// Make the request
         $result = $this->makeRequest($body, 'send-money');
 
@@ -513,6 +610,22 @@ class Mwaloni
             return [
                 "status" => "error",
                 "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        // Validate account number
+        if (!is_numeric($accountNumber)) {
+            return [
+                "status" => "error",
+                "message" => "Account number must be numeric"
             ];
         }
 
