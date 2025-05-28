@@ -57,4 +57,8 @@
 
 ## v0.1.5
 
--  Adds amount and phone number validation
+-  Adds amount and account number validation
+
+## v0.1.6
+
+- Adds KPLC post paid API

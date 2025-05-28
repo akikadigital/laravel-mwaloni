@@ -307,6 +307,24 @@ $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName
 $response = $mwaloni->getStatus($orderNumber);
 ```
 
+### KPLC Postpaid
+
+```php
+/**
+ * 
+   * Send money to a KPLC postpaid account
+   * 
+   * @param string $meterNumber - The meter number
+   * @param string $accountNumber - The account number
+   * @param string $msisdn - The phone number attached to the account
+   * @param float $amount - The amount to send
+   * 
+   * @return mixed
+   */
+
+$response = $mwaloni->kplcPostpaid($meterNumber, $accountNumber, $msisdn, $amount);
+```
+
 ### Perform contact lookup
 
 ```php

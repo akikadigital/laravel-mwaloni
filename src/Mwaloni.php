@@ -150,7 +150,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info("------------------- Authenticate -------------------");
+            info("------------------- Fetch Balance -------------------");
             info("fetchBalance request: " . json_encode($body));
             info("fetchBalance result: " . json_encode($result));
         }
@@ -214,7 +214,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Daraja Mobile -------------------');
             info('mobile request: ' . json_encode($body));
             info('mobile request: ' . json_encode($result));
         }
@@ -266,7 +266,7 @@ class Mwaloni
         }
 
         // Validate account number
-        if(!is_numeric($accountNumber)) {
+        if (!is_numeric($accountNumber)) {
             return [
                 "status" => "error",
                 "message" => "Account number must be numeric"
@@ -279,7 +279,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Daraja Till -------------------');
             info('till request: ' . json_encode($body));
             info('till result: ' . json_encode($result));
         }
@@ -345,7 +345,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Daraja Paybill -------------------');
             info('paybill request: ' . json_encode($body));
             info('paybill result: ' . json_encode($result));
         }
@@ -415,7 +415,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- IFT -------------------');
             info('ift request: ' . json_encode($body));
             info('ift result: ' . json_encode($result));
         }
@@ -491,7 +491,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- EFT -------------------');
             info('eft request: ' . json_encode($body));
             info('eft result: ' . json_encode($result));
         }
@@ -563,7 +563,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Pesalink -------------------');
             info('sendPesalink request: ' . json_encode($body));
             info('sendPesalink result: ' . json_encode($result));
         }
@@ -634,9 +634,63 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- RTGS -------------------');
             info('rtgs request: ' . json_encode($body));
             info('rtgs result: ' . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
+     * 
+     * Send money to a KPLC postpaid account
+     * 
+     * @param string $meterNumber - The meter number
+     * @param string $accountNumber - The account number
+     * @param string $msisdn - The phone number attached to the account
+     * @param float $amount - The amount to send
+     * 
+     * @return mixed
+     */
+
+    public function kplcPostpaid($meterNumber, $accountNumber, $msisdn, $amount)
+    {
+        /// Prepare the request body
+        $body = [
+            "channel" => "kplc-postpaid",
+            "service_id" => $this->serviceId,
+            "meter_number" => $meterNumber,
+            "account_number" => $accountNumber,
+            "msisdn" => $msisdn,
+            "amount" => $amount,
+        ];
+
+        // validation
+        if (empty($meterNumber) || empty($accountNumber) || empty($msisdn) || empty($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- KPLC Post Paid -------------------');
+            info('kplcPostpaid request: ' . json_encode($body));
+            info('kplcPostpaid result: ' . json_encode($result));
         }
 
         /// Return the result
@@ -672,7 +726,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Status -------------------');
             info('getStatus request: ' . json_encode($body));
             info('getStatus result: ' . json_encode($result));
         }
@@ -710,7 +764,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Contact Lookup -------------------');
             info('contactLookup request: ' . json_encode($body));
             info('contactLookup result: ' . json_encode($result));
         }
@@ -749,7 +803,7 @@ class Mwaloni
 
         /// Log the request and response if debug mode is enabled
         if ($this->debugMode) {
-            info('------------------- Authenticate -------------------');
+            info('------------------- Send SMS -------------------');
             info('sendSms request: ' . json_encode($body));
             info('sendSms result: ' . json_encode($result));
         }
