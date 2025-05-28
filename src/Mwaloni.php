@@ -581,6 +581,7 @@ class Mwaloni
      * @param string $accountName - The name of the account holder
      * @param string $bankName - The name of the bank
      * @param string $swiftCode - The swift code of the bank
+     * @param string $address - The address of the account holder
      * @param string $bankCountryCode - The country code of the bank
      * @param float $amount - The amount to send
      * @param string $currencyCode - The currency code
@@ -589,13 +590,14 @@ class Mwaloni
      * @return mixed
      */
 
-    public function rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description)
+    public function rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $address, $bankCountryCode, $amount, $currencyCode, $description)
     {
         $body = [
             "channel" => "rtgs",
             "service_id" => $this->serviceId,
             "country_code" => $bankCountryCode,
             "account_name" => $accountName,
+            "address" => $address,
             "bank_name" => $bankName,
             "bank_cif" => $swiftCode,
             "account_number" => $accountNumber,

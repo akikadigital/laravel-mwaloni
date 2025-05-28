@@ -62,3 +62,7 @@
 ## v0.1.6
 
 - Adds KPLC post paid API
+
+## v0.1.7
+
+- Updates rtgs payload

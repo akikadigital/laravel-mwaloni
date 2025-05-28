@@ -281,6 +281,7 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
    * @param string $accountName - The name of the account holder
    * @param string $bankName - The name of the bank
    * @param string $swiftCode - The swift code of the bank
+   * @param string $address - The address of the account holder
    * @param string $bankCountryCode - The country code of the bank
    * @param float $amount - The amount to send
    * @param string $currencyCode - The currency code
@@ -289,7 +290,7 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
    * @return mixed
 */
 
-$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $bankCountryCode, $amount, $currencyCode, $description);
+$response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $address, $bankCountryCode, $amount, $currencyCode, $description);
 ```
 
 ### Query transaction status
@@ -311,14 +312,14 @@ $response = $mwaloni->getStatus($orderNumber);
 
 ```php
 /**
- * 
+ *
    * Send money to a KPLC postpaid account
-   * 
+   *
    * @param string $meterNumber - The meter number
    * @param string $accountNumber - The account number
    * @param string $msisdn - The phone number attached to the account
    * @param float $amount - The amount to send
-   * 
+   *
    * @return mixed
    */
 
