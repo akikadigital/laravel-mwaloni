@@ -293,6 +293,22 @@ $response = $mwaloni->pesalink($orderNumber, $accountNumber, $accountName, $bank
 $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName, $swiftCode, $address, $bankCountryCode, $amount, $currencyCode, $description);
 ```
 
+### Send via Stanbic
+```php
+/**
+ * Send money to a Stanbic bank account
+   * 
+   * @param string $orderNumber - The order number
+   * @param string $bankName - The name of the bank
+   * @param string $accountNumber - The account number
+   * @param string $accountName - The name of the account holder
+   * @param string $bankCode - The bank code
+   * @param float $amount - The amount to send
+   * @param string $description - The description of the transaction
+   */
+$response = $mwaloni->sendStanbic($orderNumber, $bankName, $accountNumber, $accountName, $bankCode, $amount, $description)
+```
+
 ### Query transaction status
 
 ```php

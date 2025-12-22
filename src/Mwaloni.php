@@ -646,6 +646,61 @@ class Mwaloni
     }
 
     /**
+     * Send money to a Stanbic bank account
+     * 
+     * @param string $orderNumber - The order number
+     * @param string $bankName - The name of the bank
+     * @param string $accountNumber - The account number
+     * @param string $accountName - The name of the account holder
+     * @param string $bankCode - The bank code
+     * @param float $amount - The amount to send
+     * @param string $description - The description of the transaction
+     */
+    public function sendStanbic($orderNumber, $bankName, $accountNumber, $accountName, $bankCode, $amount, $description)
+    {
+        $body = [
+            "channel" => "stanbic",
+            "service_id" => $this->serviceId,
+            'order_number' => $orderNumber,
+            'creditorBankCode' => $bankCode,
+            'creditorBankName' => $bankName,
+            'account_name' => $accountName,
+            'account_number' => $accountNumber,
+            'amount' => $amount,
+            'description' => $description,
+        ];
+
+        // validation
+        if (empty($orderNumber) || empty($bankName) || empty($accountNumber) || empty($accountName) || empty($bankCode) || empty($amount) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Stanbic Send Money -------------------');
+            info('sendStanbic request: ' . json_encode($body));
+            info('sendStanbic result: ' . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    /**
      * 
      * Send money to a KPLC postpaid account
      * 

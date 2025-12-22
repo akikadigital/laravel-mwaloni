@@ -1,6 +1,6 @@
 <?php
 
-namespace Akika\Mwaloni\Facades;
+namespace Akika\LaravelMwaloni\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

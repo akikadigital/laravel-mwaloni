@@ -66,3 +66,7 @@
 ## v0.1.7
 
 - Updates rtgs payload
+
+## v0.1.8
+
+- Adds Send through Stanbic bank for Ghana market
