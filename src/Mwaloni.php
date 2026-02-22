@@ -47,7 +47,7 @@ class Mwaloni
             $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
         }
 
-        // $this->baseUrl = "https://mwaloni-wallet.test/api/";
+        $this->baseUrl = "https://mwaloni-wallet.test/api/";
         // $this->baseUrl = "https://wallet.mwaloni.com/api/";
 
         if ($this->debugMode) {
@@ -703,6 +703,15 @@ class Mwaloni
         return $result;
     }
 
+    /**
+     * Send money via MTN Mobile Money
+     *
+     * @param string $orderNumber
+     * @param string $accountNumber
+     * @param float $amount
+     * @param string $description
+     * @return mixed
+     */
     public function sendMomo($orderNumber, $accountNumber, $amount, $description)
     {
         $body = [

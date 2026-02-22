@@ -57,7 +57,7 @@
 
 ## v0.1.5
 
--  Adds amount and account number validation
+- Adds amount and account number validation
 
 ## v0.1.6
 
@@ -74,3 +74,7 @@
 ## v0.1.9
 
 - Adds Send through MTN MoMo
+
+## v0.2.0
+
+- Updates MoMo payment
