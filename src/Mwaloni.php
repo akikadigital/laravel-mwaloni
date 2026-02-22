@@ -47,6 +47,9 @@ class Mwaloni
             $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
         }
 
+        // $this->baseUrl = "https://mwaloni-wallet.test/api/";
+        // $this->baseUrl = "https://wallet.mwaloni.com/api/";
+
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
             info('API URL: ' . $this->baseUrl);
@@ -694,6 +697,47 @@ class Mwaloni
             info('------------------- Stanbic Send Money -------------------');
             info('sendStanbic request: ' . json_encode($body));
             info('sendStanbic result: ' . json_encode($result));
+        }
+
+        /// Return the result
+        return $result;
+    }
+
+    public function sendMomo($orderNumber, $accountNumber, $amount, $description)
+    {
+        $body = [
+            "channel" => "mtn-momo",
+            "service_id" => $this->serviceId,
+            'order_number' => $orderNumber,
+            'account_number' => $accountNumber,
+            'amount' => $amount,
+            'description' => $description,
+        ];
+
+        // validation
+        if (empty($orderNumber) || empty($accountNumber) || empty($amount) || empty($description)) {
+            return [
+                "status" => "error",
+                "message" => "Missing required details"
+            ];
+        }
+
+        // check if amount is numeric
+        if (!is_numeric($amount)) {
+            return [
+                "status" => "error",
+                "message" => "Amount must be a number"
+            ];
+        }
+
+        /// Make the request
+        $result = $this->makeRequest($body, 'send-money');
+
+        /// Log the request and response if debug mode is enabled
+        if ($this->debugMode) {
+            info('------------------- Momo Send Money -------------------');
+            info('sendMomo request: ' . json_encode($body));
+            info('sendMomo result: ' . json_encode($result));
         }
 
         /// Return the result

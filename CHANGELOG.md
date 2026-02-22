@@ -70,3 +70,7 @@
 ## v0.1.8
 
 - Adds Send through Stanbic bank for Ghana market
+
+## v0.1.9
+
+- Adds Send through MTN MoMo
