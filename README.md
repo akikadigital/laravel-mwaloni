@@ -294,6 +294,7 @@ $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName
 ```
 
 ### Send via Stanbic
+
 ```php
 /**
  * Send money to a Stanbic bank account
@@ -307,6 +308,21 @@ $response = $mwaloni->rtgs($orderNumber, $accountNumber, $accountName, $bankName
    * @param string $description - The description of the transaction
    */
 $response = $mwaloni->sendStanbic($orderNumber, $bankName, $accountNumber, $accountName, $bankCode, $amount, $description)
+```
+
+### Send via MoMo
+
+```php
+/**
+     * Send money via MTN Mobile Money
+     *
+     * @param string $orderNumber
+     * @param string $accountNumber
+     * @param float $amount
+     * @param string $description
+     * @return mixed
+     */
+$response = $mwaloni->sendMomo($orderNumber, $accountNumber, $amount, $description);
 ```
 
 ### Query transaction status

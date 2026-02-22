@@ -78,3 +78,7 @@
 ## v0.2.0
 
 - Updates MoMo payment
+
+## v0.2.1
+
+- Updates MoMo payment READMe
