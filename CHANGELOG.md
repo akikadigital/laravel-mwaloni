@@ -82,3 +82,7 @@
 ## v0.2.1
 
 - Updates MoMo payment READMe
+
+## v0.2.2
+
+- Updates core API

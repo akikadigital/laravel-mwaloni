@@ -41,14 +41,7 @@ class Mwaloni
         $this->debugMode = config('mwaloni.debug');
 
         // Set the base URL based on the environment
-        if ($this->environment == 'production') {
-            $this->baseUrl = "https://wallet.mwaloni.com/api/";
-        } else {
-            $this->baseUrl = "https://wallet-stg.mwaloni.com/api/";
-        }
-
-        $this->baseUrl = "https://mwaloni-wallet.test/api/";
-        // $this->baseUrl = "https://wallet.mwaloni.com/api/";
+        $this->baseUrl = config('mwaloni.url.' . $this->environment);
 
         if ($this->debugMode) {
             info('------------------- Initiliazing Mwaloni -------------------');
