@@ -85,4 +85,4 @@
 
 ## v0.2.2
 
-- Updates core API
+- Updates core URL definitions
