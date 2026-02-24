@@ -23,8 +23,9 @@ This will generate a mwaloni.php file in your config directory where you can set
 Add the following configurations into the .env file
 
 ```bash
-MWALONI_ENV=
-MWALONI_DEBUG=
+MWALONI_ENV= # sandbox|production
+MWALONI_DEBUG= # true|false
+MWALONI_URL_SANDBOX= # Can be added for local tests
 ```
 
 NOTE:

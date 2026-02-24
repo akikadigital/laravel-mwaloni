@@ -86,3 +86,8 @@
 ## v0.2.2
 
 - Updates core URL definitions
+
+## v0.2.3
+
+- Updates tutorials
+- Updates routing
